@@ -5,7 +5,13 @@
  *      Author: mdmedinamartinez
  */
 #include <iostream>
-using namespace std;
+#include "Organism.h"
+#include "Ant.h"
+#include "Doodlebug.h"
+
+using std::cout;
+using std::cin;
+using std::endl;
 
 int main(){
 	cout << "Hi";
