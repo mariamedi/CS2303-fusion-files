@@ -30,7 +30,8 @@ int main(int argc, char** argv) {
 	Board board; // Will hold the info about the game
 
 	// Save the command line arguments
-	// falls through switch b/c if has a high number of args, the rest are guaranteed
+	// Falls through switch b/c if has a high number of args, the rest are guaranteed
+	// After each argument checks to see if it had a positive value, else resorts to default
 	switch (argc) {
 	case 7:
 		doPause = atoi(argv[6]); // Convert to integer
@@ -88,10 +89,57 @@ int main(int argc, char** argv) {
 					<< endl;
 			nrows = ncols = 20; // reset to default if invalid input
 		}
+		// checks to see sum of organisms is less than grid size
+		if(doodlebugs + ants > nrows * ncols){
+			cout << "The number of organisms exceed the given grid size, so all arguments have been defaulted." << endl;
+			doodlebugs = 5;
+			ants = 100;
+			nrows = ncols = 20;
+		}
 		break;
 	default:
 		break;
 	}
+
+	// creates the game board w/ given game pieces
+	board = new Board(nrows, ncols, ants, doodlebugs); // initalizes the board
+
+	// check to see if board could be created
+	if(!board)
+	{
+		cout << "Unable to allocate memory for the board with given array dimensions." << endl;
+		return 1; // Exit failure
+	}
+
+	// play the game until either the time steps are reached or termination is reached
+	for(int i = 0; i < timeSteps; i++)
+	{
+		board.playRound(); // plays a single generation of the game; increases steps
+		cout << "Time step: " << i << endl;
+
+		if(doPause) // if the user wants to pause after (n) timeSteps
+		{
+			if(board.getSteps() == doPause) // pauses before next iteration if user wants to show board
+			{
+				board.printBoard(); // prints the board before playing the next step
+				getchar(); // waits for user input before continuing
+			}
+		}
+		else // if the user is not pausing; board is printed every round
+		{
+			board.printBoard();
+		}
+		// checks to see if an end condition has been reached
+		if(board.checkTermination())
+			i = timeSteps; // used to force out of for-loop
+	}
+
+	// prints a summary of the end of the game
+	board.printEnd();
+
+	// delete all the objects
+
+	return 0;
 
 }
 
