@@ -12,7 +12,7 @@
 class Organism {
 public:
 	int getPreyStatus();
-	virtual void move();
+	virtual void move(Organism** grid);
 	Organism(); // default constructor
 	~Organism();
 

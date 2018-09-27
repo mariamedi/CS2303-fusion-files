@@ -37,22 +37,28 @@ void Board::initializeGameBoard(int seed) {
 
 	// place all the doodles w/ for loop
 	for (int i = 0; i < totalDoodles; i++) {
-		// finds random row and col number for element
-		r = (int) ((rand() * 100) % nrows);
-		c = (int) ((rand() * 100) % ncols);
 
-		&gridA[r][c] = new Doodlebug(); // sets a new Organism pointer in given array spot
+		do {
+			// finds random row and col number for element
+			r = (int) ((rand() * 100) % nrows);
+			c = (int) ((rand() * 100) % ncols);
+
+		} while (getPointer(r,c) != NULL); // keeps running until a null pointer is found, so a doodlebug can inhabit the space
+
+		// only adds a doodlebug if there is no current doodlebug located there
+		&getPointer(r,c) = new Doodlebug(); // sets a new Organism pointer in given array spot
 	}
-	// place all the ants w/ for loop
+// place all the ants w/ for loop
 	for (int i = 0; i < totalAnts; i++) {
-		// finds random row and col number for element
-		r = (int) ((rand() * 100) % nrows);
-		c = (int) ((rand() * 100) % ncols);
+		do {
+			// finds random row and col number for element
+			r = (int) ((rand() * 100) % nrows);
+			c = (int) ((rand() * 100) % ncols);
 
-		// if it is an empty pointer spot
-		if(checkIfPrey(&gridA[r][c]) == 0){
-			&gridA[r][c] = new Ant();
-		}
+		} while (getPointer(r,c) != NULL); // keeps running until a null pointer is found, so an ant can inhabit the space
+
+		// adds the ant in the empty spot previously found
+		&getPointer(r,c) = new Ant();
 	}
 }
 /**
@@ -60,7 +66,7 @@ void Board::initializeGameBoard(int seed) {
  * @return True if they are within bounds, False if they are not
  */
 bool Board::checkBounds(int r, int c) {
-	// check to see if the given row and column are in bounds
+// check to see if the given row and column are in bounds
 	if (c >= ncols || c < 0 || r >= nrows || r < 0)
 		return false;
 	return true;
@@ -89,7 +95,7 @@ Organism* Board::getPointer(int r, int c) {
  * this by checking to see whether there are newly placed doodles in the next location grid.
  */
 void Board::playRound() {
-	// should update the count of doodles and ants as it goes through
+// should update the count of doodles and ants as it goes through
 
 }
 /**
@@ -110,9 +116,9 @@ void Board::printBoard() {
 	 to print out every character*/
 	for (int r = 0; r < nrows; r++) {
 		for (int c = 0; c < ncols; c++) {
-			if(checkIfPrey(&gridA[r][c]) == 1)
+			if (checkIfPrey(&gridA[r][c]) == 1)
 				cout << 'o';
-			else if(checkIfPrey(&gridA[r][c]) == 2)
+			else if (checkIfPrey(&gridA[r][c]) == 2)
 				cout << 'x';
 			else
 				cout << ' ';
@@ -143,7 +149,7 @@ int Board::checkTermination() {
 void Board::printEnd(int argc, char** argv) {
 	cout << "Final Grid" << endl;
 
-	// outputs the original command line
+// outputs the original command line
 	cout << "./";
 	for (int i = 0; i < argc; i++) {
 		cout << argv[i] << " ";
@@ -158,7 +164,7 @@ void Board::printEnd(int argc, char** argv) {
 }
 // come back to this
 Board::~Board() {
-	// iterates through each element of the arrays and deletes them
+// iterates through each element of the arrays and deletes them
 	for (int i = 0; i < nrows; i++)
 		delete *gridA++;
 	for (int i = 0; i < nrows; i++)
