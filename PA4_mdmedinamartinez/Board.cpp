@@ -71,7 +71,7 @@ bool Board::checkBounds(int r, int c) {
  * @return 0 if empty organism, 1 if the given organism is prey, 2 if not
  */
 int Board::checkIfPrey(Organism* o) {
-	return o->isPrey(); // calls the pointer's method to see if it's prey
+	return o->getPreyStatus(); // calls the pointer's method to see if it's prey
 }
 /**
  * Gets a pointer to the organism stored in the given cell

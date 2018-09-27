@@ -11,15 +11,18 @@
 
 class Organism {
 public:
-	// add other methods relevant to an organism
-	// move method to have bounds checking
-	bool isPrey();
-	Organism(bool p);
+	int getPreyStatus();
+	virtual void move();
+	Organism(); // default constructor
 	~Organism();
 
+protected:
+	void setPreyStatus(int p);
+	void setCanBreed();
+
 private:
-	// add variables
-	bool preyStatus;
+	int canBreed; // keeps track of whether an organism is eligible to breed
+	int preyStatus; // keeps track of whether an organism is prey, predator, or empty
 };
 
 #endif /* ORGANISM_H_ */
