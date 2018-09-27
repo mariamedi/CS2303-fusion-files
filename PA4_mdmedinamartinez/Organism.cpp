@@ -7,13 +7,12 @@
 #include "Organism.h"
 
 // constructor
-Organism::Organism(bool p)
-	:preyStatus(p)
-	 {
+Organism::Organism(bool p) :
+		preyStatus(p) {
 
-	 } // Organism Constructor
+} // Organism Constructor
 
 // destructor
-Organism::~Organism(){
+Organism::~Organism() {
 	// delete dynamically allocated things
 }

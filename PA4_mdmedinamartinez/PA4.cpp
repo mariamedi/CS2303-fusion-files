@@ -102,7 +102,7 @@ int main(int argc, char** argv) {
 	}
 
 	// creates the game board w/ given game pieces
-	board = new Board(nrows, ncols, ants, doodlebugs); // initalizes the board
+	board = new Board(nrows, ncols, ants, doodlebugs, seed); // initalizes the board
 
 	// check to see if board could be created
 	if(!board)
@@ -135,7 +135,7 @@ int main(int argc, char** argv) {
 	}
 
 	// prints a summary of the end of the game
-	board.printEnd();
+	board.printEnd(argc, argv);
 
 	// delete all the objects
 
