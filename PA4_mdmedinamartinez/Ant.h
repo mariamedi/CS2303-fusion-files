@@ -11,14 +11,13 @@
 
 class Ant: public Organism{
 public:
-	void move(Organism** grid, Ant* ant);
+	void move(Organism** grid, int r, int c);
 	void breedAnt(Organism** grid, Ant* ant);
 	Ant();
-	~Ant();
+	virtual ~Ant()=0;
+	//~Ant();
 private:
-	int* enumerateNeighbors(Organism** grid, int r, int c); // array keeping track of the neighbors around the organism
-	Organism* chooseRandomNeighbor(Organism** grid, int r, int c);
-	bool checkIfAllOccupied(Organism* org_array); // checks to see if all the neighbors are taken up by organism
+	int* enumerateNeighbors(Organism** grid, int r, int c, int count); // array keeping track of the neighbors around the organism
 };
 
 #endif /* ANT_H_ */
