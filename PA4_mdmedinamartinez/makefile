@@ -4,11 +4,11 @@ CFLAGS=-g -Wall
 all: PA4
 
 # Create the executable
-PA4: PA4.o Organism.o Ant.o Doodlebug.o
-	g++ $(CFLAGS) PA4.o Organism.o Ant.o Doodlebug.o -o PA4
+PA4: PA4.o Organism.o Ant.o Doodlebug.o Board.o
+	g++ $(CFLAGS) PA4.o Organism.o Ant.o Doodlebug.o Board.o -o PA4
 
 # Create the .o file
-PA4.o: PA4.cpp Organism.h Ant.h Doodlebug.h
+PA4.o: PA4.cpp Organism.h Ant.h Doodlebug.h Board.h
 	g++ $(CFLAGS) -c PA4.cpp
 
 Organism.o: Organism.cpp Organism.h
@@ -19,6 +19,9 @@ Ant.o: Ant.cpp Ant.h
 	
 Doodlebug.o: Doodlebug.cpp Doodlebug.h
 	g++ $(CFLAGS) -c Doodlebug.cpp
+	
+Board.o: Board.cpp Board.h
+	g++ $(CFLAGS) -c Board.cpp
 
 # Remove the .o files and executable
 clean:
