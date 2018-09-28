@@ -30,7 +30,7 @@ Board::Board(int rows, int cols, int ants, int doodles, int seed) {
  * doodlebugs and ants
  */
 void Board::initializeGameBoard(int seed) {
-	cout<<countDoodles << endl;
+	cout << countDoodles << endl;
 	cout << countAnts << endl;
 	srand(seed); // set the seed
 
@@ -102,6 +102,18 @@ void Board::playRound() {
 	Doodlebug* dTemp; // holds a doodlebug temp pointer
 	Ant * aTemp; // holds an ant temp pointer
 
+	// iterates through board and changes the value of hasMoved to false since it will be a new iteration
+	for (int r = 0; r < nrows; r++) {
+		for (int c = 0; c < ncols; c++) {
+			// proceeds if it contains an organism
+			if (gridA[r][c] != NULL) {
+				temp = gridA[r][c];
+				temp->setMoved(false); // resets movement to false b/c new turn about to occur
+			}
+		}
+
+	}
+
 	// iterates through the game board and focuses on doodlebug actions
 	for (int r = 0; r < nrows; r++) {
 		for (int c = 0; c < ncols; c++) {
@@ -120,7 +132,7 @@ void Board::playRound() {
 						countAnts--; // decreases ant count as one was eaten
 					if (dTemp->checkStarvation(gridA, r, c)) // checks to see if it has starved
 						countDoodles--; // decreases the current count of the doodles
-					else if(dTemp->breedDoodle(gridA, r, c, nrows, ncols)) {
+					else if (dTemp->breedDoodle(gridA, r, c, nrows, ncols)) {
 						// increases all the doodle counts as a new one was born
 						countDoodles++;
 						totalDoodles++;
@@ -151,6 +163,7 @@ void Board::playRound() {
 			}
 		}
 	}
+
 	completedTimeSteps++;
 }
 /**
@@ -169,11 +182,25 @@ int Board::getSteps() {
 void Board::printBoard() {
 	/* loops through entirety of the current array
 	 to print out every character*/
+//	for (int r = 0; r < nrows; r++) {
+//		for (int c = 0; c < ncols; c++) {
+//			if (gridA[r][c] != NULL && checkIfPrey(&gridA[r][c]) == 1) { // ant
+//				cout << 'o';
+//			} else if (gridA[r][c] != NULL && checkIfPrey(&gridA[r][c]) == 2) { // doodlebug
+//				cout << 'x';
+//			} else {
+//				cout << '-';
+//			}
+//		}
+//		cout << endl;
+//	}
+//	cout << countDoodles << endl;
+//	cout << countAnts << endl;
 	for (int r = 0; r < nrows; r++) {
 		for (int c = 0; c < ncols; c++) {
-			if (gridA[r][c] != NULL && checkIfPrey(&gridA[r][c]) == 1) { // ant
+			if (gridA[r][c] != NULL && gridA[r][c]->getPreyStatus() == 1) { // ant
 				cout << 'o';
-			} else if (gridA[r][c] != NULL && checkIfPrey(&gridA[r][c]) == 2) {// doodlebug
+			} else if (gridA[r][c] != NULL && gridA[r][c]->getPreyStatus() == 2) { // doodlebug
 				cout << 'x';
 			} else {
 				cout << '-';
@@ -181,8 +208,8 @@ void Board::printBoard() {
 		}
 		cout << endl;
 	}
-	cout<<countDoodles << endl;
-	cout<<countAnts<< endl;
+	cout << countDoodles << endl;
+	cout << countAnts << endl;
 }
 /**
  * Iterates through the current grid and checks to see if
@@ -214,7 +241,7 @@ void Board::printEnd(int argc, char** argv) {
 		cout << argv[i] << " ";
 	}
 	cout << endl;
-	switch(reasonForEnd){
+	switch (reasonForEnd) {
 	case 0:
 		cout << "Termination reason: Reached desired time steps" << endl;
 		break;
