@@ -23,6 +23,7 @@ public:
 	void printBoard();
 	int checkTermination();
 	void printEnd(int argc, char** argv);
+   // void decreaseAnts();
 	Board(int rows, int cols, int ants, int doodles, int seed);
 	~Board();
 private:
@@ -43,6 +44,7 @@ private:
 	int checkIfPrey(Organism** o);
 	bool checkBounds(int r, int c);
     void initializeGameBoard(int seed);
+
 };
 
 #endif /* BOARD_H_ */

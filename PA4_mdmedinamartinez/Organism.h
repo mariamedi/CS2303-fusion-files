@@ -15,7 +15,7 @@ private:
 	int preyStatus; // keeps track of whether an organism is prey, predator, or empty
 	int numRow; // the current row location
 	int numCol; // the current column location
-
+	bool hasMoved; // whether an organism has moved in a given turn
 public:
 	int getPreyStatus();
 	virtual void move(Organism** grid, int r, int c, int nrows, int ncols);
@@ -25,6 +25,8 @@ public:
 	void setCol(int c);
 	int getCanBreed();
 	void setCanBreed(int p);
+	void setMoved(bool b);
+	bool getMoved();
 	Organism(); // default constructor
 	virtual ~Organism(){}
 	//~Organism();

@@ -234,6 +234,7 @@ void Board::printEnd(int argc, char** argv) {
 			<< countDoodles << endl;
 	printBoard();
 }
+
 // come back to this
 Board::~Board() {
 // iterates through each element of the arrays and deletes them

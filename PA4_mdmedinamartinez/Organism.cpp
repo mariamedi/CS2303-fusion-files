@@ -14,6 +14,7 @@ Organism::Organism()
 	canBreed = 0; // no time steps have passed
 	numRow = -1; // set to default non-existent values
 	numCol = -1; // set to default non-existent values
+	hasMoved = false; // the default is that org has not moved
 } // Organism Constructor
 /**
  * Getter for the prey status variable holding what kind of organism it is
@@ -118,4 +119,17 @@ int* Organism::enumerateNeighbors(Organism*** grid, int r, int c, int count, int
 		neighbors[3] = 1;
 
 	return neighbors; // array should contain either 1 or 0 depending on if a neighbor in a given direction is unoccupied
+}
+/**
+ * Changes the bool value marking if a given organism has moved in a time step
+ */
+void Organism::setMoved(bool p){
+	hasMoved = p;
+}
+/**
+ * Returns whether the organism has moved this turn
+ * @return if has moved
+ */
+bool Organism::getMoved(){
+	return hasMoved;
 }
