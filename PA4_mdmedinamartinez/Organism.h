@@ -28,7 +28,7 @@ public:
 	void setMoved(bool b);
 	bool getMoved();
 	Organism(); // default constructor
-	virtual ~Organism(){}
+	virtual ~Organism();
 	//~Organism();
 
 protected:

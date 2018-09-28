@@ -133,3 +133,6 @@ void Organism::setMoved(bool p){
 bool Organism::getMoved(){
 	return hasMoved;
 }
+Organism::~Organism(){
+
+}

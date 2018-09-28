@@ -51,7 +51,7 @@ bool Doodlebug::move(Organism*** grid, int r, int c, int nrows, int ncols) {
 
 	int* neighbors = enumerateNeighbors(grid, r, c, count, nrows, ncols); // array holding info of surrounding neighbors
 	int unoccupied = 0; // number of free neighbors around the doodlebug
-	int ants = 0; // number of either occupied or off-the-grid spaces
+	int ants = 0; // number of ants surrounding doodle
 	// iterate through array and count how many are unoccupied
 	for (int i = 0; i < count; i++) {
 
@@ -126,8 +126,10 @@ bool Doodlebug::move(Organism*** grid, int r, int c, int nrows, int ncols) {
 
 	} // end for
 	  // first check to see if there are any ants to influence movement
+	// makes sure that it is not reading a bug that has already moved
 	  // if there is only one ant, the doodlebug goes there
-	if (ants == 1) {
+	std::cout<<"I'm after unocc" << std::endl;
+	if (ants == 1 && !grid[r][c]->getMoved()) {
 		std::cout << "FIRST IF MOVE: ANT = 1" << std::endl;
 		if (upAnt) {
 			delete grid[r - 1][c]; // delete the ant that had been there
@@ -150,7 +152,7 @@ bool Doodlebug::move(Organism*** grid, int r, int c, int nrows, int ncols) {
 		setTimeStepsSinceEaten(0); // reset the time passed since they ate back to 0
 		//delete grid[r][c];
 		grid[r][c] = NULL; //resets the old space to be a null pointer now
-	} else if (ants > 1) // random ant victim must be chosen
+	} else if (ants > 1  && !grid[r][c]->getMoved()) // random ant victim must be chosen
 			{
 		std::cout << "SECOND IF MOVE: ANT > 1" << std::endl;
 		randomSelector = rand() % ants; // finds a random number w/ available count
@@ -161,28 +163,32 @@ bool Doodlebug::move(Organism*** grid, int r, int c, int nrows, int ncols) {
 		switch (randomSelector) {
 		case 0:
 			if (upAnt) {
-				delete grid[r - 1][c]; // delete the ant that had been there
+				grid[r - 1][c] = NULL;
+				//delete grid[r - 1][c]; // delete the ant that had been there
 				grid[r - 1][c] = grid[r][c]; // assigns the current ant pointer to the new location
 				grid[r - 1][c]->setMoved(true);
 			}
 			break;
 		case 1:
 			if (downAnt) {
-				delete grid[r + 1][c];
+				grid[r + 1][c] =NULL;
+				//delete grid[r + 1][c];
 				grid[r + 1][c] = grid[r][c]; // assigns the current ant pointer to the new location
 				grid[r + 1][c]->setMoved(true);
 			}
 			break;
 		case 2:
 			if (rightAnt) {
-				delete grid[r][c + 1];
+				grid[r][c + 1] = NULL;
+				//delete grid[r][c + 1];
 				grid[r][c + 1] = grid[r][c]; // assigns the current ant pointer to the new location
 				grid[r][c + 1]->setMoved(true);
 			}
 			break;
 		case 3:
 			if (leftAnt) {
-				delete grid[r][c - 1];
+				grid[r][c - 1] = NULL;
+				//delete grid[r][c - 1];
 				grid[r][c - 1] = grid[r][c]; // assigns the current ant pointer to the new location
 				grid[r][c - 1]->setMoved(true);
 			}
@@ -192,12 +198,13 @@ bool Doodlebug::move(Organism*** grid, int r, int c, int nrows, int ncols) {
 		}
 		ateAnt = true;
 		setTimeStepsSinceEaten(0); // reset the time passed since they ate back to 0
+		//delete grid[r][c];
 		grid[r][c] = NULL; //resets the old space to be a null pointer now
 	}
 
 // movement depends on how many are unoccupied
 // if there is only one unoccupied neighbor, it looks for the free position
-	else if (count == 1) {
+	else if (count == 1  && !grid[r][c]->getMoved()) {
 		std::cout << "THIRD IF MOVE: COUNT = 1" << std::endl;
 		std::cout << "Nope" << r << std::endl;
 
@@ -214,8 +221,9 @@ bool Doodlebug::move(Organism*** grid, int r, int c, int nrows, int ncols) {
 			grid[r][c - 1] = grid[r][c]; // assigns the current ant pointer to the new location
 			grid[r][c - 1]->setMoved(true);
 		}
+		//delete grid[r][c];
 		grid[r][c] = NULL; //resets the old space to be a null pointer now
-	} else if (count > 1) { // if > 1 then chooseRandomNeighbor(pass in the array and return a pointer to the right one in the grid)
+	} else if (count > 1  && !grid[r][c]->getMoved()) { // if > 1 then chooseRandomNeighbor(pass in the array and return a pointer to the right one in the grid)
 		std::cout << "FOURTH IF MOVE: COUNT > 1" << std::endl;
 		std::cout << "Yay: " << r << std::endl;
 		randomSelector = rand() % count; // finds a random number w/ available count
@@ -251,7 +259,7 @@ bool Doodlebug::move(Organism*** grid, int r, int c, int nrows, int ncols) {
 				std::cout<<"Mystery " << grid[r][c + 1]->getMoved() <<std::endl;
 
 				grid[r][c + 1]->setMoved(true); // to ensure not moved again in same turn
-				grid[r][c]->setMoved(false);
+				//grid[r][c]->setMoved(false);
 				delete grid[r][c];
 				std::cout<<"Mystery " << grid[r][c]->getMoved() <<std::endl;
 				std::cout<<"Mystery " << grid[r][c + 1]->getMoved() <<std::endl;
@@ -268,52 +276,15 @@ bool Doodlebug::move(Organism*** grid, int r, int c, int nrows, int ncols) {
 		default:
 			break;
 		}
+		std::cout<<"I am here?" << std::endl;
+
+		//delete grid[r][c];
+		std::cout<<"I am not?" << std::endl;
 		grid[r][c] = NULL; //resets the old space to be a null pointer now
 	}
 // if there are no free spaces the function exits without having moved the ant
 	return ateAnt;
 }
-/**
- * Creates an array to represent each of the four adjacent cells. Info is stored
- * assuming each index starting from 0 represents up, down, right, and left respectively.
- * A (1) is placed into the index if the cell is occupied and (0) if it is unoccupied.
- * @param grid The current state of the game board
- * @param r The row of the element being looked at
- * @param c The column of the element being looked at
- * @param count The size of the array that is being created
- * @return An array holding values representing an occupied or unoccupied neighbor state
- *
- int* Doodlebug::enumerateNeighbors(Organism*** grid, int r, int c, int count, int nrows,
- int ncols) {
- int * neighbors = new int[count]; // creates an array
-
- // checks element above for occupancy
- if (((r - 1) >= 0 && c >= 0) && ((r - 1) < nrows && c < ncols)
- && grid[r - 1][c] == NULL)
- neighbors[0] = 0; // if element points to null and is in bound, then it is unoccupied
- else
- neighbors[0] = 1; // a cell is occupied if it is out of bounds or not null
- // checks element below for occupancy
- if (((r + 1) >= 0 && c >= 0) && ((r + 1) < nrows && c < ncols)
- && grid[r + 1][c] == NULL)
- neighbors[1] = 0;
- else
- neighbors[1] = 1;
- // checks element to right for occupancy
- if ((r >= 0 && (c + 1) >= 0) && (r < nrows && (c + 1) < ncols)
- && !grid[r][c + 1])
- neighbors[2] = 0;
- else
- neighbors[2] = 1;
- // checks element to left for occupancy
- if ((r >= 0 && (c - 1) >= 0) && (r < nrows && (c - 1) < ncols)
- && grid[r][c - 1] == NULL)
- neighbors[3] = 0;
- else
- neighbors[3] = 1;
-
- return neighbors; // array should contain either 1 or 0 depending on if a neighbor in a given direction is unoccupied
- }*/
 /**
  * Functions focuses on whether a doodlebug can breed. Can only breed if 8 time steps
  * have passed. Checks this and if there is space, then it breeds else it stays still.
@@ -422,7 +393,7 @@ bool Doodlebug::breedDoodle(Organism*** grid, int r, int c, int nrows,
 bool Doodlebug::checkStarvation(Organism*** grid, int r, int c) {
 	if (getTimeStepsSinceEaten() >= 3) // the doodle is starved and will die
 			{
-		delete grid[r][c]; // delete the doodlebug
+		//delete grid[r][c]; // delete the doodlebug
 		grid[r][c] = NULL; // set the old pointer to null
 		return true;
 	}

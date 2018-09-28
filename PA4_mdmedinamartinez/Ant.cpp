@@ -64,18 +64,23 @@ void Ant::move(Organism*** grid, int r, int c, int nrows, int ncols) {
 	}
 	// movement depends on how many are unoccupied
 	// if there is only one unoccupied neighbor, it looks for the free position
-	if (count == 1) {
+	if (count == 1 && !grid[r][c]->getMoved()) {
 		if (up) {
 			grid[r - 1][c] = grid[r][c]; // assigns the current ant pointer to the new location
+			grid[r - 1][c]->setMoved(true);
 		} else if (down) {
 			grid[r + 1][c] = grid[r][c]; // assigns the current ant pointer to the new location
+			grid[r + 1][c]->setMoved(true);
 		} else if (right) {
 			grid[r][c + 1] = grid[r][c]; // assigns the current ant pointer to the new location
+			grid[r][c + 1]->setMoved(true);
 		} else if (left) {
 			grid[r][c - 1] = grid[r][c]; // assigns the current ant pointer to the new location
+			grid[r][c - 1]->setMoved(true);
 		}
+		//delete grid[r][c];
 		grid[r][c] = NULL; //resets the old space to be a null pointer now
-	} else if (count > 1) { // if > 1 then chooseRandomNeighbor(pass in the array and return a pointer to the right one in the grid)
+	} else if (count > 1 && !grid[r][c]->getMoved()) { // if > 1 then chooseRandomNeighbor(pass in the array and return a pointer to the right one in the grid)
 		randomSelector = rand() % count; // finds a random number w/ available count
 
 		// number should at most have been 3 as count is 4, so checks to see which was selected
@@ -83,24 +88,38 @@ void Ant::move(Organism*** grid, int r, int c, int nrows, int ncols) {
 		switch (randomSelector) {
 		case 0:
 			if (up)
+				{
 				grid[r - 1][c] = grid[r][c]; // assigns the current ant pointer to the new location
+				grid[r - 1][c]->setMoved(true); // to ensure not moved again in same turn
+				}
 			break;
 		case 1:
 			if (down)
-				grid[r + 1][c] = grid[r][c]; // assigns the current ant pointer to the new location
+				{
+					grid[r + 1][c] = grid[r][c]; // assigns the current ant pointer to the new location
+					grid[r + 1][c]->setMoved(true);
+				}
 			break;
 		case 2:
 			if (right)
+				{
 				grid[r][c + 1] = grid[r][c]; // assigns the current ant pointer to the new location
+				grid[r][c + 1]->setMoved(true); // to ensure not moved again in same turn
+
+				}
 			break;
 		case 3:
 			if (left)
+				{
 				grid[r][c - 1] = grid[r][c]; // assigns the current ant pointer to the new location
+				grid[r][c - 1]->setMoved(true);
+				}
 			break;
 		default:
 			break;
 		}
-		grid[r][c] = (Organism*) NULL; //resets the old space to be a null pointer now
+		//delete grid[r][c];
+		grid[r][c] = NULL; //resets the old space to be a null pointer now
 	}
 	// if there are no free spaces the function exits without having moved the ant
 }
@@ -120,6 +139,7 @@ bool Ant::breedAnt(Organism*** grid, int r, int c, int nrows, int ncols) {
 
 	// checks to see if ant has been alive for at least 3 time steps
 	if (getCanBreed() >= 3) { // take steps to see if an ant has space to spawn as it is eligible
+		std::cout<<"I AM A BREEDING ANT " << getCanBreed() << std::endl;
 		int count = 4; // size of the array to hold the neighbors
 
 		// vars keep track if the given neighbors are unoccupied, true if they are

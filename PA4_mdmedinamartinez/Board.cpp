@@ -136,10 +136,10 @@ void Board::playRound() {
 			if (gridA[r][c] != NULL) {
 				temp = gridA[r][c];
 
-				if (temp->getPreyStatus() == 1) { // if we encounter an ant
+				if (temp->getPreyStatus() == 1 && !temp->getMoved()) { // if we encounter an ant
 					aTemp = static_cast<Ant*>(temp); // know it's an ant, so we cast it
 					// increases necessary time steps by one
-					aTemp->setCanBreed(dTemp->getCanBreed() + 1);
+					aTemp->setCanBreed(aTemp->getCanBreed() + 1);
 
 					aTemp->move(gridA, r, c, nrows, ncols); // moves the ant
 					if (aTemp->breedAnt(gridA, r, c, nrows, ncols)) {
