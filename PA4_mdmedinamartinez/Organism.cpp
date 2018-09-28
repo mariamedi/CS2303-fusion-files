@@ -33,6 +33,14 @@ void Organism::setPreyStatus(int p){
 void Organism::setCanBreed(){
 	canBreed = 0;
 }
+/**
+ * Returns the value of the number of time steps an organism has experienced
+ * to see if it can breed
+ * @return int The time steps that have been taken
+ */
+int Organism::getCanBreed(){
+	return canBreed;
+}
 // destructor
 Organism::~Organism() {
 	// delete dynamically allocated things

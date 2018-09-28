@@ -12,11 +12,12 @@
 class Organism {
 public:
 	int getPreyStatus();
-	virtual void move(Organism** grid);
+	virtual void move(Organism** grid, int r, int c, int nrows, int ncols);
 	Organism(); // default constructor
 	~Organism();
 
 protected:
+	int getCanBreed();
 	void setPreyStatus(int p);
 	void setCanBreed();
 
