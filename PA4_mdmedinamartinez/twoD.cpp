@@ -13,32 +13,28 @@
  * @author Mike Ciaraldi
  */
 
-Organism** make2DOrganism(int nrows, int ncolumns) {
+Organism*** make2DOrganism(int nrows, int ncolumns) {
 
-	Organism **a; // Array of pointers to rows
+	Organism ***a; // Array of pointers to rows
 	unsigned int i; // Loop counter
 
-	// First allocate the array of pointers to rows
+	// Allocate array of pointers to rows
 	a = new Organism**[nrows];
-	if (!a) { // Unable to allocate the array
-		return (Organism **) NULL;
-	}
+	//a = (Organism***) malloc(nrows * sizeof(Organism **));
 
-	// Now allocate array for each row
+	// Unable to allocate array
+	if (!a)
+		return (Organism ***) NULL;
+
+	// Allocate array for each row
 	for (i = 0; i < nrows; i++) {
-		// i is the row we are about to allocate
-		a[i] = new Organism**[ncolumns];
+		// Allocate enough memory for ncolumns
+		//a[i] = malloc(ncolumns * sizeof(Organism*));
+		a[i] = new Organism*[ncolumns];
 		if (!a[i]) {
-			return (Organism **) NULL;
+			return (Organism***) NULL;
 		}
 	}
-	// sets every pointer in the array to Null
-	for(int r = 0; r < nrows; r++){
-		for(int c = 0; c < ncolumns; c++){
-			a[r][c] = (Organism*)NULL;
-		}
-	}
-
 	return a;
 }
 
@@ -56,7 +52,7 @@ char** make2Dchar(int nrows, int ncolumns) {
 	unsigned int i; // Loop counter
 
 	// Allocate array of pointers to rows
-	a = new char**[nrows];
+	a = new char*[nrows];
 
 	// Unable to allocate array
 	if (!a)
@@ -65,6 +61,7 @@ char** make2Dchar(int nrows, int ncolumns) {
 	// Allocate array for each row
 	for (i = 0; i < nrows; i++) {
 		// Allocate enough memory for ncolumns
+
 		a[i] = new char[ncolumns];
 		if (!a[i]) {
 			return (char **) NULL;

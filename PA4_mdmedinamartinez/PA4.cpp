@@ -37,7 +37,7 @@ int main(int argc, char** argv) {
 		doPause = atoi(argv[6]); // Convert to integer
 		if (doPause < 0) {
 			cout << "Improper input." << endl;
-			cout << "Only positive numbers allowed for generations." << endl;
+			cout << "Only positive numbers allowed for pausing." << endl;
 			cout << "Default value: 0 - program will run, but will not pause."
 					<< endl;
 			doPause = 0; // reset to default if invalid input
@@ -46,7 +46,7 @@ int main(int argc, char** argv) {
 		seed = atoi(argv[5]); // Convert to integer
 		if (seed < 0) {
 			cout << "Improper input." << endl;
-			cout << "Only positive numbers allowed for generations." << endl;
+			cout << "Only positive numbers allowed for seed." << endl;
 			cout << "Default value: 1 - program will run, but with default value."
 					<< endl;
 			seed = 1; // reset to default if invalid input
@@ -55,7 +55,7 @@ int main(int argc, char** argv) {
 		timeSteps = atoi(argv[4]); // Convert to integer
 		if (timeSteps < 0) {
 			cout << "Improper input." << endl;
-			cout << "Only positive numbers allowed for generations." << endl;
+			cout << "Only positive numbers allowed for time steps." << endl;
 			cout
 					<< "Default value: 1000 - program will run, but with default value."
 					<< endl;
@@ -65,7 +65,7 @@ int main(int argc, char** argv) {
 		ants = atoi(argv[3]); // Convert to integer
 		if (ants < 0) {
 			cout << "Improper input." << endl;
-			cout << "Only positive numbers allowed for generations." << endl;
+			cout << "Only positive numbers allowed for ants." << endl;
 			cout << "Default value: 100 - program will run, but with default value."
 					<< endl;
 			ants = 100; // reset to default if invalid input
@@ -74,7 +74,7 @@ int main(int argc, char** argv) {
 		doodlebugs = atoi(argv[2]); // Converts to integer; falls through to other args
 		if (doodlebugs < 0) {
 			cout << "Improper input." << endl;
-			cout << "Only positive numbers allowed for generations." << endl;
+			cout << "Only positive numbers allowed for doodlebugs." << endl;
 			cout << "Default value: 5 - program will run, but with default value."
 					<< endl;
 			doodlebugs = 5; // reset to default if invalid input
@@ -84,7 +84,7 @@ int main(int argc, char** argv) {
 		ncols = nrows;
 		if (nrows < 0) {
 			cout << "Improper input." << endl;
-			cout << "Only positive numbers allowed for generations." << endl;
+			cout << "Only positive numbers allowed for grid size." << endl;
 			cout << "Default value: 20 - program will run, but with default value."
 					<< endl;
 			nrows = ncols = 20; // reset to default if invalid input
@@ -100,10 +100,10 @@ int main(int argc, char** argv) {
 	default:
 		break;
 	}
-
+	cout << "1" << endl;
 	// creates the game board w/ given game pieces
 	Board* board = new Board(nrows, ncols, ants, doodlebugs, seed); // initalizes the board
-
+	cout << "2" << endl;
 	// check to see if board could be created
 	if(!board)
 	{
@@ -119,7 +119,7 @@ int main(int argc, char** argv) {
 
 		if(doPause) // if the user wants to pause after (n) timeSteps
 		{
-			if(board->getSteps() == doPause) // pauses before next iteration if user wants to show board
+			if(board->getSteps() % doPause == 0) // pauses before next iteration if user wants to show board
 			{
 				board->printBoard(); // prints the board before playing the next step
 				getchar(); // waits for user input before continuing

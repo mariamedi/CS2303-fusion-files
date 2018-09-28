@@ -17,13 +17,15 @@ Board::Board(int rows, int cols, int ants, int doodles, int seed) {
 	completedTimeSteps = 0;
 	terminatingCondition = -1;
 	this->seed = seed;
-
+	cout << "1.1" << endl;
 	// creates arrays to hold the current and next state of the game
 	gridA = make2DOrganism(nrows, ncols);
 	//gridB = make2DOrganism(nrows, ncols);
+	cout<< "1.2" << endl;
 
 	// populate the game board w/ initial organisms
 	initializeGameBoard(seed);
+	cout << "1.3" << endl;
 
 } // constructor
 /**
@@ -40,26 +42,24 @@ void Board::initializeGameBoard(int seed) {
 
 		do {
 			// finds random row and col number for element
-			r = (int) ((rand() * 100) % nrows);
-			c = (int) ((rand() * 100) % ncols);
+			r = (rand() % nrows);
+			c = (rand() % ncols);
 
-		} while (getPointer(r,c) != NULL); // keeps running until a null pointer is found, so a doodlebug can inhabit the space
-
+		} while (r >= 0 && c >= 0 && r < nrows && c < ncols && gridA[r][c] != NULL); // keeps running until a null pointer is found, so a doodlebug can inhabit the space
 		// only adds a doodlebug if there is no current doodlebug located there
-		//&getPointer(r,c) = new Doodlebug(); // sets a new Organism pointer in given array spot
+		gridA[r][c] = new Doodlebug(r,c); // sets a new Organism pointer in given array spot
 	}
 // place all the ants w/ for loop
 	for (int i = 0; i < totalAnts; i++) {
 		do {
 			// finds random row and col number for element
-			r = (int) ((rand() * 100) % nrows);
-			c = (int) ((rand() * 100) % ncols);
+			r = (rand() % nrows);
+			c = (rand() % ncols);
 
-		} while (getPointer(r,c) != NULL); // keeps running until a null pointer is found, so an ant can inhabit the space
+		} while (gridA[r][c] != NULL); // keeps running until a null pointer is found, so an ant can inhabit the space
 
 		// adds the ant in the empty spot previously found
-		Organism* o_pointer = getPointer(r,c);
-		o_pointer = new Ant();
+		gridA[r][c] = new Ant(r, c);
 	}
 }
 /**
@@ -77,15 +77,15 @@ bool Board::checkBounds(int r, int c) {
  * the organism's function to check if it is prey or not
  * @return 0 if empty organism, 1 if the given organism is prey, 2 if not
  */
-int Board::checkIfPrey(Organism* o) {
-	return o->getPreyStatus(); // calls the pointer's method to see if it's prey
+int Board::checkIfPrey(Organism**o) {
+	return (*o)->getPreyStatus(); // calls the pointer's method to see if it's prey
 }
 /**
  * Gets a pointer to the organism stored in the given cell
  * @return Pointer to the Organism in cell
  */
 Organism* Board::getPointer(int r, int c) {
-	return &gridA[r][c]; // returns the address of the cell;
+	return gridA[r][c]; // returns the address of the cell;
 }
 /**
  * Plays one time step / round of the game
@@ -97,6 +97,60 @@ Organism* Board::getPointer(int r, int c) {
  */
 void Board::playRound() {
 // should update the count of doodles and ants as it goes through
+
+	Organism* temp; // holds the current organism pointer we are looking at
+	Doodlebug* dTemp; // holds a doodlebug temp pointer
+	Ant * aTemp; // holds an ant temp pointer
+
+	// iterates through the game board and focuses on doodlebug actions
+	for (int r = 0; r < nrows; r++) {
+		for (int c = 0; c < ncols; c++) {
+			// if it has an organism it proceeds
+			if (gridA[r][c] != NULL) {
+				temp = gridA[r][c];
+
+				if (temp->getPreyStatus() == 2) { // if we encounter a doodlebug
+					dTemp = static_cast<Doodlebug*>(temp); // know it's a doodlebug, so we cast it
+					// increases necessary time steps by one
+					dTemp->setCanBreed(dTemp->getCanBreed() + 1);
+					dTemp->setTimeStepsSinceEaten(
+							dTemp->getTimeStepsSinceEaten() + 1);
+
+					if (dTemp->move(gridA, r, c, nrows, ncols)) // moves the doodlebug first
+						countAnts--; // decreases ant count as one was eaten
+					if (dTemp->checkStarvation(gridA, r, c)) // checks to see if it has starved
+						countDoodles--; // decreases the current count of the doodles
+					if (dTemp->breedDoodle(gridA, r, c, nrows, ncols)) {
+						// increases all the doodle counts as a new one was born
+						countDoodles++;
+						totalDoodles++;
+					}
+				}
+			}
+		}
+	}
+	// iterates through the game board again and focuses on the doodlebugs
+	for (int r = 0; r < nrows; r++) {
+		for (int c = 0; c < ncols; c++) {
+			// if it has an organism it proceeds
+			if (gridA[r][c] != NULL) {
+				temp = gridA[r][c];
+
+				if (temp->getPreyStatus() == 2) { // if we encounter a doodlebug
+					aTemp = static_cast<Ant*>(temp); // know it's a doodlebug, so we cast it
+					// increases necessary time steps by one
+					aTemp->setCanBreed(dTemp->getCanBreed() + 1);
+
+					aTemp->move(gridA, r, c, nrows, ncols); // moves the ant
+					if (aTemp->breedAnt(gridA, r, c, nrows, ncols)) {
+						// increases all the doodle counts as a new one was born
+						countAnts++;
+						totalAnts++;
+					}
+				}
+			}
+		}
+	}
 
 }
 /**
@@ -157,10 +211,10 @@ void Board::printEnd(int argc, char** argv) {
 	}
 	cout << endl;
 	cout << "Time steps completed: " + completedTimeSteps << endl;
-	cout << "Total Ants: " << totalAnts << "Remaining Ants: " << countAnts << endl;
-	cout
-			<< "Total Doodles: " << totalDoodles << "Remaining Doodles: "
-					<< countDoodles << endl;
+	cout << "Total Ants: " << totalAnts << "Remaining Ants: " << countAnts
+			<< endl;
+	cout << "Total Doodles: " << totalDoodles << "Remaining Doodles: "
+			<< countDoodles << endl;
 	printBoard();
 }
 // come back to this
@@ -169,6 +223,6 @@ Board::~Board() {
 	for (int i = 0; i < nrows; i++)
 		delete *gridA++;
 	//for (int i = 0; i < nrows; i++)
-		//delete *gridB++;
+	//delete *gridB++;
 } // destructor
 

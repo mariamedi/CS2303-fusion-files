@@ -11,13 +11,13 @@
 
 class Ant: public Organism {
 private:
-	int* enumerateNeighbors(Organism** grid, int r, int c, int count, int nrows,
-			int cols); // array keeping track of the neighbors around the organism
+//	int* enumerateNeighbors(Organism*** grid, int r, int c, int count, int nrows,
+	//		int cols); // array keeping track of the neighbors around the organism
 
 public:
-	void move(Organism** grid, int r, int c, int nrows, int ncols);
-	bool breedAnt(Organism** grid, int r, int c, int nrows, int ncols);
-	Ant();
+	void move(Organism*** grid, int r, int c, int nrows, int ncols);
+	bool breedAnt(Organism*** grid, int r, int c, int nrows, int ncols);
+	Ant(int row, int col);
 	~Ant();
 };
 

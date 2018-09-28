@@ -8,7 +8,9 @@
 #include "Ant.h"
 
 // constructor
-Ant::Ant() {
+Ant::Ant(int row, int col) {
+	setRow(row);
+	setCol(col);
 }
 /**
  * Takes a pointer to an ant in the grid and moves it according
@@ -20,7 +22,7 @@ Ant::Ant() {
  * @param nrows The total number of rows in the grid
  * @param ncols The total number of columns in the grid
  */
-void Ant::move(Organism** grid, int r, int c, int nrows, int ncols) {
+void Ant::move(Organism*** grid, int r, int c, int nrows, int ncols) {
 	// arrayof size 4 holding either 0 or 1 if it is a valid spot
 	int count = 4; // size of the array to be returned
 
@@ -60,7 +62,7 @@ void Ant::move(Organism** grid, int r, int c, int nrows, int ncols) {
 		}
 	}
 	// movement depends on how many are unoccupied
-	// if there is only one unoccupied neighbor, it looks for the free posiiton
+	// if there is only one unoccupied neighbor, it looks for the free position
 	if (count == 1) {
 		if (up) {
 			grid[r - 1][c] = grid[r][c]; // assigns the current ant pointer to the new location
@@ -71,7 +73,7 @@ void Ant::move(Organism** grid, int r, int c, int nrows, int ncols) {
 		} else if (left) {
 			grid[r][c - 1] = grid[r][c]; // assigns the current ant pointer to the new location
 		}
-		//grid[r][c] = NULL; //resets the old space to be a null pointer now
+		grid[r][c] = NULL; //resets the old space to be a null pointer now
 	} else if (count > 1) { // if > 1 then chooseRandomNeighbor(pass in the array and return a pointer to the right one in the grid)
 		randomSelector = (rand() * 100) % count; // finds a random number w/ available count
 
@@ -97,7 +99,7 @@ void Ant::move(Organism** grid, int r, int c, int nrows, int ncols) {
 		default:
 			break;
 		}
-		//grid[r][c] = (Organism*) NULL; //resets the old space to be a null pointer now
+		grid[r][c] = (Organism*) NULL; //resets the old space to be a null pointer now
 	}
 	// if there are no free spaces the function exits without having moved the ant
 }
@@ -113,7 +115,7 @@ void Ant::move(Organism** grid, int r, int c, int nrows, int ncols) {
  * @param ncols The total number of columns in the grid
  * @return True if an ant was spawned, false if not, used to keep track of total ants
  */
-bool Ant::breedAnt(Organism** grid, int r, int c, int nrows, int ncols) {
+bool Ant::breedAnt(Organism*** grid, int r, int c, int nrows, int ncols) {
 
 	// checks to see if ant has been alive for at least 3 time steps
 	if (getCanBreed() >= 3) { // take steps to see if an ant has space to spawn as it is eligible
@@ -158,15 +160,15 @@ bool Ant::breedAnt(Organism** grid, int r, int c, int nrows, int ncols) {
 		// if there is only one unoccupied neighbor, it looks for the free position
 		if (count == 1) {
 			if (up) {
-				//grid[r - 1][c] = new Ant(); // assigns the located pointer to a new ant
+				grid[r - 1][c] = new Ant(r-1, c); // assigns the located pointer to a new ant
 			} else if (down) {
-				//grid[r + 1][c] = new Ant(); // assigns the located pointer to a new ant
+				grid[r + 1][c] = new Ant(r+1, c); // assigns the located pointer to a new ant
 			} else if (right) {
-				//grid[r][c + 1] = new Ant(); // assigns the located pointer to a new ant
+				grid[r][c + 1] = new Ant(r, c+1); // assigns the located pointer to a new ant
 			} else if (left) {
-				//grid[r][c - 1] = new Ant(); // assigns the located pointer to a new ant
+				grid[r][c - 1] = new Ant(r, c-1); // assigns the located pointer to a new ant
 			}
-			setCanBreed(); // resets this ant's breed count
+			setCanBreed(0); // resets this ant's breed count
 			return true; // successfully spawned a new ant
 		} else if (count > 1) { // if > 1 then chooseRandomNeighbor(pass in the array and return a pointer to the right one in the grid)
 			randomSelector = (rand() * 100) % count; // finds a random number w/ available count
@@ -176,30 +178,30 @@ bool Ant::breedAnt(Organism** grid, int r, int c, int nrows, int ncols) {
 			switch (randomSelector) {
 			case 0:
 				if (up)
-					//grid[r - 1][c] = new Ant(); // assigns the located pointer to a new ant
+					grid[r - 1][c] = new Ant(r-1,c); // assigns the located pointer to a new ant
 				break;
 			case 1:
 				if (down)
-					//grid[r + 1][c] = new Ant(); // assigns the located pointer to a new ant
+					grid[r + 1][c] = new Ant(r+1,c); // assigns the located pointer to a new ant
 				break;
 			case 2:
 				if (right)
-					//grid[r][c + 1] = new Ant(); // assigns the located pointer to a new ant
+					grid[r][c + 1] = new Ant(r, c+1); // assigns the located pointer to a new ant
 				break;
 			case 3:
 				if (left)
-					//grid[r][c - 1] = new Ant(); // assigns the located pointer to a new ant
+					grid[r][c - 1] = new Ant(r, c-1); // assigns the located pointer to a new ant
 				break;
 			default:
 				break;
 			}
-			setCanBreed(); // resets the ants breed count
+			setCanBreed(0); // resets the ants breed count
 			return true; // successfully spawned a new ant
 		}
 	}
 	return false; // no ant was spawned during the existence of this function
 }
-/**
+/*/**
  * Creates an array to represent each of the four adjacent cells. Info is stored
  * assuming each index starting from 0 represents up, down, right, and left respectively.
  * A (1) is placed into the index if the cell is occupied and (0) if it is unoccupied.
@@ -208,38 +210,38 @@ bool Ant::breedAnt(Organism** grid, int r, int c, int nrows, int ncols) {
  * @param c The column of the element being looked at
  * @param count The size of the array that is being created
  * @return An array holding values representing an occupied or unoccupied neighbor state
- */
-int* enumerateNeighbors(Organism** grid, int r, int c, int count, int nrows,
+ *
+int* Ant::enumerateNeighbors(Organism*** grid, int r, int c, int count, int nrows,
 		int ncols) {
 	int * neighbors = new int[count]; // creates an array
 
 	// checks element above for occupancy
 	if (((r - 1) >= 0 && c >= 0) && ((r - 1) < nrows && c < ncols)
-			)//&& grid[r - 1][c] == NULL)
+			&& grid[r - 1][c] == NULL)
 		neighbors[0] = 0; // if element points to null and is in bound, then it is unoccupied
 	else
 		neighbors[0] = 1; // a cell is occupied if it is out of bounds or not null
 	// checks element below for occupancy
 	if (((r + 1) >= 0 && c >= 0) && ((r + 1) < nrows && c < ncols)
-			)//&& grid[r + 1][c] == NULL)
+			&& grid[r + 1][c] == NULL)
 		neighbors[1] = 0;
 	else
 		neighbors[1] = 1;
 	// checks element to right for occupancy
 	if ((r >= 0 && (c + 1) >= 0) && (r < nrows && (c + 1) < ncols)
-			)//&& !grid[r][c + 1])
+			&& !grid[r][c + 1])
 		neighbors[2] = 0;
 	else
 		neighbors[2] = 1;
 	// checks element to left for occupancy
 	if ((r >= 0 && (c - 1) >= 0) && (r < nrows && (c - 1) < ncols)
-			)//&& grid[r][c - 1] == (Organism*)NULL)
+			&& grid[r][c - 1] == NULL)
 		neighbors[3] = 0;
 	else
 		neighbors[3] = 1;
 
 	return neighbors; // array should contain either 1 or 0 depending on if a neighbor in a given direction is unoccupied
-}
+}*/
 Ant::~Ant(){
 
 }

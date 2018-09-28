@@ -5,7 +5,7 @@ all: PA4
 
 # Create the executable
 PA4: PA4.o Organism.o Ant.o Doodlebug.o Board.o twoD.o
-	g++ $(CFLAGS) PA4.o Organism.o Ant.o Doodlebug.o Board.o -o PA4
+	g++ $(CFLAGS) PA4.o Organism.o Ant.o Doodlebug.o Board.o twoD.o -o PA4
 
 # Create the .o file
 PA4.o: PA4.cpp Organism.h Ant.h Doodlebug.h Board.h twoD.h
@@ -17,7 +17,7 @@ Organism.o: Organism.cpp Organism.h
 Ant.o: Ant.cpp Ant.h Organism.h
 	g++ $(CFLAGS) -c Ant.cpp
 	
-Doodlebug.o: Doodlebug.cpp Doodlebug.h
+Doodlebug.o: Doodlebug.cpp Doodlebug.h Organism.h
 	g++ $(CFLAGS) -c Doodlebug.cpp
 	
 Board.o: Board.cpp Board.h Organism.h Ant.h Doodlebug.h twoD.h

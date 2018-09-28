@@ -10,21 +10,30 @@
 #include <iostream>
 
 class Organism {
+private:
+	int canBreed; // keeps track of whether an organism is eligible to breed
+	int preyStatus; // keeps track of whether an organism is prey, predator, or empty
+	int numRow; // the current row location
+	int numCol; // the current column location
+
 public:
 	int getPreyStatus();
 	virtual void move(Organism** grid, int r, int c, int nrows, int ncols);
+	int getRow();
+	void setRow(int r);
+	int getCol();
+	void setCol(int c);
+	int getCanBreed();
+	void setCanBreed(int p);
 	Organism(); // default constructor
 	virtual ~Organism(){}
 	//~Organism();
 
 protected:
-	int getCanBreed();
 	void setPreyStatus(int p);
-	void setCanBreed();
+	int* enumerateNeighbors(Organism*** grid, int r, int c, int count, int nrows,
+				int cols); // array keeping track of the neighbors around the organism
 
-private:
-	int canBreed; // keeps track of whether an organism is eligible to breed
-	int preyStatus; // keeps track of whether an organism is prey, predator, or empty
 };
 
 #endif /* ORGANISM_H_ */

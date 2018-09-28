@@ -36,11 +36,11 @@ private:
 	int totalDoodles; // The total number of doodles that existed over the course of the simulation
 	int seed; // The seed passed in by the user or default
 	// 2D arrays used to play the game
-	Organism **gridA; // holds the current time step grid
+	Organism ***gridA; // holds the current time step grid
 	//Organism **gridB; // will hold the new time step grid
 
 	Organism* getPointer(int r, int c);
-	int checkIfPrey(Organism* o);
+	int checkIfPrey(Organism** o);
 	bool checkBounds(int r, int c);
     void initializeGameBoard(int seed);
 };
