@@ -11,6 +11,7 @@
 Ant::Ant(int row, int col) {
 	setRow(row);
 	setCol(col);
+	setPreyStatus(1);
 }
 /**
  * Takes a pointer to an ant in the grid and moves it according
@@ -75,7 +76,7 @@ void Ant::move(Organism*** grid, int r, int c, int nrows, int ncols) {
 		}
 		grid[r][c] = NULL; //resets the old space to be a null pointer now
 	} else if (count > 1) { // if > 1 then chooseRandomNeighbor(pass in the array and return a pointer to the right one in the grid)
-		randomSelector = (rand() * 100) % count; // finds a random number w/ available count
+		randomSelector = rand() % count; // finds a random number w/ available count
 
 		// number should at most have been 3 as count is 4, so checks to see which was selected
 		// and moves the ant. A case should be selected because value above is being modded by the count
@@ -171,7 +172,7 @@ bool Ant::breedAnt(Organism*** grid, int r, int c, int nrows, int ncols) {
 			setCanBreed(0); // resets this ant's breed count
 			return true; // successfully spawned a new ant
 		} else if (count > 1) { // if > 1 then chooseRandomNeighbor(pass in the array and return a pointer to the right one in the grid)
-			randomSelector = (rand() * 100) % count; // finds a random number w/ available count
+			randomSelector = rand() % count; // finds a random number w/ available count
 
 			// number should at most have been 3 as count is 4, so checks to see which was selected
 			// and spawns an ant. A case should be selected because value above is being modded by the count

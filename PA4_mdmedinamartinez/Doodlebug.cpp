@@ -13,6 +13,7 @@ Doodlebug::Doodlebug(int row, int col) {
 	timeStepsSinceEaten = 0;
 	setRow(row);
 	setCol(col);
+	setPreyStatus(2);
 }
 /**
  * Takes the indices to a doodlebug in the grid and moves it according
@@ -131,7 +132,7 @@ bool Doodlebug::move(Organism*** grid, int r, int c, int nrows, int ncols) {
 		grid[r][c] = NULL; //resets the old space to be a null pointer now
 	} else if (ants > 1) // random ant victim must be chosen
 			{
-		randomSelector = (rand() * 100) % ants; // finds a random number w/ available count
+		randomSelector = rand()  % ants; // finds a random number w/ available count
 
 		// number should at most have been 3 as count is 4, so checks to see which was selected
 		// and moves the doodlebug. A case should be selected because value above is being modded by the count
@@ -183,7 +184,7 @@ bool Doodlebug::move(Organism*** grid, int r, int c, int nrows, int ncols) {
 		}
 		grid[r][c] = NULL; //resets the old space to be a null pointer now
 	} else if (count > 1) { // if > 1 then chooseRandomNeighbor(pass in the array and return a pointer to the right one in the grid)
-		randomSelector = (rand() * 100) % count; // finds a random number w/ available count
+		randomSelector = rand() % count; // finds a random number w/ available count
 
 		// number should at most have been 3 as count is 4, so checks to see which was selected
 		// and moves the ant. A case should be selected because value above is being modded by the count
@@ -319,7 +320,7 @@ bool Doodlebug::breedDoodle(Organism*** grid, int r, int c, int nrows,
 			setCanBreed(0); // resets this doodle's breed count
 			return true; // successfully spawned a new doodle
 		} else if (count > 1) { // if > 1 then chooseRandomNeighbor(pass in the array and return a pointer to the right one in the grid)
-			randomSelector = (rand() * 100) % count; // finds a random number w/ available count
+			randomSelector = rand() % count; // finds a random number w/ available count
 
 			// number should at most have been 3 as count is 4, so checks to see which was selected
 			// and spawns an ant. A case should be selected because value above is being modded by the count

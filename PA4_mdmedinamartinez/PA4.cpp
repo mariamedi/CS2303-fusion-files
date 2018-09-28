@@ -100,22 +100,23 @@ int main(int argc, char** argv) {
 	default:
 		break;
 	}
-	cout << "1" << endl;
 	// creates the game board w/ given game pieces
 	Board* board = new Board(nrows, ncols, ants, doodlebugs, seed); // initalizes the board
-	cout << "2" << endl;
+
 	// check to see if board could be created
 	if(!board)
 	{
 		cout << "Unable to allocate memory for the board with given array dimensions." << endl;
 		return 1; // Exit failure
 	}
+	cout << "Initial board" << endl;
+	board->printBoard();
 
 	// play the game until either the time steps are reached or termination is reached
 	for(int i = 0; i < timeSteps; i++)
 	{
 		board->playRound(); // plays a single generation of the game; increases steps
-		cout << "Time step: " << i << endl;
+		cout << "Time step: " << i + 1 << endl;
 
 		if(doPause) // if the user wants to pause after (n) timeSteps
 		{

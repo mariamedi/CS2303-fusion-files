@@ -17,15 +17,12 @@ Board::Board(int rows, int cols, int ants, int doodles, int seed) {
 	completedTimeSteps = 0;
 	terminatingCondition = -1;
 	this->seed = seed;
-	cout << "1.1" << endl;
+
 	// creates arrays to hold the current and next state of the game
 	gridA = make2DOrganism(nrows, ncols);
-	//gridB = make2DOrganism(nrows, ncols);
-	cout<< "1.2" << endl;
 
 	// populate the game board w/ initial organisms
 	initializeGameBoard(seed);
-	cout << "1.3" << endl;
 
 } // constructor
 /**
@@ -33,6 +30,8 @@ Board::Board(int rows, int cols, int ants, int doodles, int seed) {
  * doodlebugs and ants
  */
 void Board::initializeGameBoard(int seed) {
+	cout<<countDoodles << endl;
+	cout << countAnts << endl;
 	srand(seed); // set the seed
 
 	int r, c; // Where a given organism will be placed
@@ -45,9 +44,10 @@ void Board::initializeGameBoard(int seed) {
 			r = (rand() % nrows);
 			c = (rand() % ncols);
 
-		} while (r >= 0 && c >= 0 && r < nrows && c < ncols && gridA[r][c] != NULL); // keeps running until a null pointer is found, so a doodlebug can inhabit the space
+		} while (r >= 0 && c >= 0 && r < nrows && c < ncols
+				&& gridA[r][c] != NULL); // keeps running until a null pointer is found, so a doodlebug can inhabit the space
 		// only adds a doodlebug if there is no current doodlebug located there
-		gridA[r][c] = new Doodlebug(r,c); // sets a new Organism pointer in given array spot
+		gridA[r][c] = new Doodlebug(r, c); // sets a new Organism pointer in given array spot
 	}
 // place all the ants w/ for loop
 	for (int i = 0; i < totalAnts; i++) {
@@ -120,7 +120,7 @@ void Board::playRound() {
 						countAnts--; // decreases ant count as one was eaten
 					if (dTemp->checkStarvation(gridA, r, c)) // checks to see if it has starved
 						countDoodles--; // decreases the current count of the doodles
-					if (dTemp->breedDoodle(gridA, r, c, nrows, ncols)) {
+					else if(dTemp->breedDoodle(gridA, r, c, nrows, ncols)) {
 						// increases all the doodle counts as a new one was born
 						countDoodles++;
 						totalDoodles++;
@@ -129,21 +129,21 @@ void Board::playRound() {
 			}
 		}
 	}
-	// iterates through the game board again and focuses on the doodlebugs
+	// iterates through the game board again and focuses on the ants
 	for (int r = 0; r < nrows; r++) {
 		for (int c = 0; c < ncols; c++) {
 			// if it has an organism it proceeds
 			if (gridA[r][c] != NULL) {
 				temp = gridA[r][c];
 
-				if (temp->getPreyStatus() == 2) { // if we encounter a doodlebug
-					aTemp = static_cast<Ant*>(temp); // know it's a doodlebug, so we cast it
+				if (temp->getPreyStatus() == 1) { // if we encounter an ant
+					aTemp = static_cast<Ant*>(temp); // know it's an ant, so we cast it
 					// increases necessary time steps by one
 					aTemp->setCanBreed(dTemp->getCanBreed() + 1);
 
 					aTemp->move(gridA, r, c, nrows, ncols); // moves the ant
 					if (aTemp->breedAnt(gridA, r, c, nrows, ncols)) {
-						// increases all the doodle counts as a new one was born
+						// increases all the ant counts as a new one was born
 						countAnts++;
 						totalAnts++;
 					}
@@ -151,7 +151,7 @@ void Board::playRound() {
 			}
 		}
 	}
-
+	completedTimeSteps++;
 }
 /**
  * Getter method for the completedTimeSteps member
@@ -171,15 +171,18 @@ void Board::printBoard() {
 	 to print out every character*/
 	for (int r = 0; r < nrows; r++) {
 		for (int c = 0; c < ncols; c++) {
-			if (checkIfPrey(&gridA[r][c]) == 1)
+			if (gridA[r][c] != NULL && checkIfPrey(&gridA[r][c]) == 1) { // ant
 				cout << 'o';
-			else if (checkIfPrey(&gridA[r][c]) == 2)
+			} else if (gridA[r][c] != NULL && checkIfPrey(&gridA[r][c]) == 2) {// doodlebug
 				cout << 'x';
-			else
-				cout << ' ';
+			} else {
+				cout << '-';
+			}
 		}
 		cout << endl;
 	}
+	cout<<countDoodles << endl;
+	cout<<countAnts<< endl;
 }
 /**
  * Iterates through the current grid and checks to see if
@@ -202,6 +205,7 @@ int Board::checkTermination() {
  * and picture of the final grid.
  */
 void Board::printEnd(int argc, char** argv) {
+	int reasonForEnd = checkTermination(); // displayed at the end as reasoning
 	cout << "Final Grid" << endl;
 
 // outputs the original command line
@@ -210,10 +214,23 @@ void Board::printEnd(int argc, char** argv) {
 		cout << argv[i] << " ";
 	}
 	cout << endl;
-	cout << "Time steps completed: " + completedTimeSteps << endl;
-	cout << "Total Ants: " << totalAnts << "Remaining Ants: " << countAnts
+	switch(reasonForEnd){
+	case 0:
+		cout << "Termination reason: Reached desired time steps" << endl;
+		break;
+	case 1:
+		cout << "Termination reason: All ants consumed" << endl;
+		break;
+	case 2:
+		cout << "Termination reason: All doodlebugs starved" << endl;
+		break;
+	default:
+		break;
+	}
+	cout << "Time steps completed: " << completedTimeSteps << endl;
+	cout << "Total Ants: " << totalAnts << " Remaining Ants: " << countAnts
 			<< endl;
-	cout << "Total Doodles: " << totalDoodles << "Remaining Doodles: "
+	cout << "Total Doodles: " << totalDoodles << " Remaining Doodles: "
 			<< countDoodles << endl;
 	printBoard();
 }
