@@ -27,7 +27,7 @@ int main(int argc, char** argv) {
 	int seed = 1; // Number to be placed into the random function
 	int doPause = 0; // Non-zero number to represent the number of time steps taken before pausing
 
-	Board board; // Will hold the info about the game
+	//Board* board; // Will hold the info about the game
 
 	// Save the command line arguments
 	// Falls through switch b/c if has a high number of args, the rest are guaranteed
@@ -102,7 +102,7 @@ int main(int argc, char** argv) {
 	}
 
 	// creates the game board w/ given game pieces
-	board = new Board(nrows, ncols, ants, doodlebugs, seed); // initalizes the board
+	Board* board = new Board(nrows, ncols, ants, doodlebugs, seed); // initalizes the board
 
 	// check to see if board could be created
 	if(!board)
@@ -114,28 +114,28 @@ int main(int argc, char** argv) {
 	// play the game until either the time steps are reached or termination is reached
 	for(int i = 0; i < timeSteps; i++)
 	{
-		board.playRound(); // plays a single generation of the game; increases steps
+		board->playRound(); // plays a single generation of the game; increases steps
 		cout << "Time step: " << i << endl;
 
 		if(doPause) // if the user wants to pause after (n) timeSteps
 		{
-			if(board.getSteps() == doPause) // pauses before next iteration if user wants to show board
+			if(board->getSteps() == doPause) // pauses before next iteration if user wants to show board
 			{
-				board.printBoard(); // prints the board before playing the next step
+				board->printBoard(); // prints the board before playing the next step
 				getchar(); // waits for user input before continuing
 			}
 		}
 		else // if the user is not pausing; board is printed every round
 		{
-			board.printBoard();
+			board->printBoard();
 		}
 		// checks to see if an end condition has been reached
-		if(board.checkTermination())
+		if(board->checkTermination())
 			i = timeSteps; // used to force out of for-loop
 	}
 
 	// prints a summary of the end of the game
-	board.printEnd(argc, argv);
+	board->printEnd(argc, argv);
 
 	// delete all the objects
 

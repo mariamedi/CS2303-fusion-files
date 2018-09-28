@@ -10,7 +10,7 @@
 #define TWOD_H_
 #include "Organism.h"
 // Function prototypes:
-int** make2DOrganism(int nrows, int ncolumns);
+Organism** make2DOrganism(int nrows, int ncolumns);
 char** make2Dchar(int nrows, int ncolumns);
 
 #endif /* TWOD_H_ */

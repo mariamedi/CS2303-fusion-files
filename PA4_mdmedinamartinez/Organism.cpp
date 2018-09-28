@@ -41,7 +41,4 @@ void Organism::setCanBreed(){
 int Organism::getCanBreed(){
 	return canBreed;
 }
-// destructor
-Organism::~Organism() {
-	// delete dynamically allocated things
-}
+

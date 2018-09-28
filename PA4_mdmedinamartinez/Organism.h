@@ -14,7 +14,8 @@ public:
 	int getPreyStatus();
 	virtual void move(Organism** grid, int r, int c, int nrows, int ncols);
 	Organism(); // default constructor
-	~Organism();
+	virtual ~Organism(){}
+	//~Organism();
 
 protected:
 	int getCanBreed();

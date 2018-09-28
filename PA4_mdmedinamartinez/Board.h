@@ -12,6 +12,8 @@
 using std::cout;
 using std::endl;
 #include "Organism.h"
+#include "Ant.h"
+#include "Doodlebug.h"
 #include "twoD.h"
 
 class Board {
@@ -35,7 +37,7 @@ private:
 	int seed; // The seed passed in by the user or default
 	// 2D arrays used to play the game
 	Organism **gridA; // holds the current time step grid
-	Organism **gridB; // will hold the new time step grid
+	//Organism **gridB; // will hold the new time step grid
 
 	Organism* getPointer(int r, int c);
 	int checkIfPrey(Organism* o);

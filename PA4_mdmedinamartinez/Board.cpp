@@ -20,7 +20,7 @@ Board::Board(int rows, int cols, int ants, int doodles, int seed) {
 
 	// creates arrays to hold the current and next state of the game
 	gridA = make2DOrganism(nrows, ncols);
-	gridB = make2DOrganism(nrows, ncols);
+	//gridB = make2DOrganism(nrows, ncols);
 
 	// populate the game board w/ initial organisms
 	initializeGameBoard(seed);
@@ -46,7 +46,7 @@ void Board::initializeGameBoard(int seed) {
 		} while (getPointer(r,c) != NULL); // keeps running until a null pointer is found, so a doodlebug can inhabit the space
 
 		// only adds a doodlebug if there is no current doodlebug located there
-		&getPointer(r,c) = new Doodlebug(); // sets a new Organism pointer in given array spot
+		//&getPointer(r,c) = new Doodlebug(); // sets a new Organism pointer in given array spot
 	}
 // place all the ants w/ for loop
 	for (int i = 0; i < totalAnts; i++) {
@@ -58,7 +58,8 @@ void Board::initializeGameBoard(int seed) {
 		} while (getPointer(r,c) != NULL); // keeps running until a null pointer is found, so an ant can inhabit the space
 
 		// adds the ant in the empty spot previously found
-		&getPointer(r,c) = new Ant();
+		Organism* o_pointer = getPointer(r,c);
+		o_pointer = new Ant();
 	}
 }
 /**
@@ -156,10 +157,10 @@ void Board::printEnd(int argc, char** argv) {
 	}
 	cout << endl;
 	cout << "Time steps completed: " + completedTimeSteps << endl;
-	cout << "Total Ants: " + totalAnts + "Remaining Ants: " + countAnts << endl;
+	cout << "Total Ants: " << totalAnts << "Remaining Ants: " << countAnts << endl;
 	cout
-			<< "Total Doodles: " + totalDoodles + "Remaining Doodles: "
-					+ countDoodles << endl;
+			<< "Total Doodles: " << totalDoodles << "Remaining Doodles: "
+					<< countDoodles << endl;
 	printBoard();
 }
 // come back to this
@@ -167,7 +168,7 @@ Board::~Board() {
 // iterates through each element of the arrays and deletes them
 	for (int i = 0; i < nrows; i++)
 		delete *gridA++;
-	for (int i = 0; i < nrows; i++)
-		delete *gridB++;
+	//for (int i = 0; i < nrows; i++)
+		//delete *gridB++;
 } // destructor
 

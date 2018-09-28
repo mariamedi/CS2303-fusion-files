@@ -27,11 +27,18 @@ Organism** make2DOrganism(int nrows, int ncolumns) {
 	// Now allocate array for each row
 	for (i = 0; i < nrows; i++) {
 		// i is the row we are about to allocate
-		a[i] = new Organism[ncolumns];
+		a[i] = new Organism**[ncolumns];
 		if (!a[i]) {
 			return (Organism **) NULL;
 		}
 	}
+	// sets every pointer in the array to Null
+	for(int r = 0; r < nrows; r++){
+		for(int c = 0; c < ncolumns; c++){
+			a[r][c] = (Organism*)NULL;
+		}
+	}
+
 	return a;
 }
 
