@@ -10,7 +10,23 @@
 
 #ifndef EVENTQUEUE_H_
 #define EVENTQUEUE_H_
+#include "Event.h"
 
+struct eventNode{
+	Event e; // holds data of current Event node
+	eventNode* next;
+};
+class EventQueue {
+private:
+	eventNode* head; // head of the eventQueue
+	eventNode* tail; // tail of the eventQueue;
+
+public:
+	void insertEvent(Event* e);
+	void removeEvent(Event* e);
+	EventQueue();
+	~EventQueue();
+};
 // function to add event to the event queue in TIME order
 	// iterates through list until finds event w time > than that of one being inserted
 	// insert just before this

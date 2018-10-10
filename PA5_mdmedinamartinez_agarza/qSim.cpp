@@ -30,6 +30,7 @@ int main(int argc, char** argv) {
 	const float DEF_SIM_TIME = 60; // default sim time
 	const float DEF_AVG_SERV = 2; // default avg service time
 	const unsigned int DEF_SEED = time(NULL); // default random time
+
 	// input command line arguments
 	int customers; // specified customer amounts
 	int tellers; // specified teller amounts
@@ -74,6 +75,33 @@ int main(int argc, char** argv) {
 			seed = DEF_SEED; // reset to default if invalid input
 		}
 	}
+
+	// Create an event queue to hold all events
+	//EventQueue events = new EventQueue();
+
+	// set all of the following in a function to run the sim w/ certain number of tellers
+		// have function return total time
+
+	//first call w/ n tellers
+		// Create necessary CustomerEvents and Customers
+			// Each CustomerEvent HAS-A Customer that action will be performed on
+		// insert CustomerEvents into Event Queue w/ EventQueue insert method
+
+		// Create necessary TellerEvents and Tellers
+			// Each TellerEvent HAS-A Teller that action will be performed on
+		// insert TellerEvents into Event Queue w/ Event Queue insert method
+
+		// WHILE the EventQueue still has Events:
+			// Remove first Event, and advance clock to it
+			// perform the action of the Event w/ Event action method (P o l y m o r p h i s m )
+				// TellerQueues will be created in this function to hold the lines of Customers
+
+	// second call w/ 1 teller
+		// have function return total time
+
+	// compare the resulting times
+
+
 	return 1;
 }
 
