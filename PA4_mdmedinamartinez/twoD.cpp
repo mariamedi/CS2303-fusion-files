@@ -11,6 +11,8 @@
  * 	  Note: Will not free partially-allocated memory.
  *
  * @author Mike Ciaraldi
+ * @author mdmeidnamartinez
+ * @authro agarza
  */
 
 Organism*** make2DOrganism(int nrows, int ncolumns) {

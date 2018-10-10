@@ -3,6 +3,7 @@
  *
  *  Created on: Sep 26, 2018
  *      Author: mdmedinamartinez
+ *      Author: agarza
  */
 #include <iostream>
 #include "Ant.h"
@@ -86,34 +87,26 @@ void Ant::move(Organism*** grid, int r, int c, int nrows, int ncols) {
 			randomSelector = rand() % count; // finds a random number w/ available count
 			switch (randomSelector) {
 			case 0:
-				std::cout << "ENTERED THE UP CASE" << std::endl;
 				if (up) {
-					std::cout << "		ATTEMPTING TO MOVE ANT UP" << std::endl;
 					grid[r - 1][c] = grid[r][c]; // assigns the current ant pointer to the new location
 					grid[r - 1][c]->setMoved(true); // to ensure not moved again in same turn
 				}
 				break;
 			case 1:
-				std::cout << "ENTERED THE DOWN CASE" << std::endl;
 				if (down) {
-					std::cout << "		ATTEMPTING TO MOVE ANT DOWN" << std::endl;
 					grid[r + 1][c] = grid[r][c]; // assigns the current ant pointer to the new location
 					grid[r + 1][c]->setMoved(true);
 				}
 				break;
 			case 2:
-				std::cout << "ENTERED THE RIGHT CASE" << std::endl;
 				if (right) {
-					std::cout << "		ATTEMPTING TO MOVE ANT RIGHT" << std::endl;
 					grid[r][c + 1] = grid[r][c]; // assigns the current ant pointer to the new location
 					grid[r][c + 1]->setMoved(true); // to ensure not moved again in same turn
 
 				}
 				break;
 			case 3:
-				std::cout << "ENTERED THE LEFT CASE" << std::endl;
 				if (left) {
-					std::cout << "		ATTEMPTING TO MOVE ANT LEFT" << std::endl;
 					grid[r][c - 1] = grid[r][c]; // assigns the current ant pointer to the new location
 					grid[r][c - 1]->setMoved(true);
 				}
@@ -122,7 +115,6 @@ void Ant::move(Organism*** grid, int r, int c, int nrows, int ncols) {
 				break;
 			}
 		}
-		//delete grid[r][c];
 		grid[r][c] = NULL; //resets the old space to be a null pointer now
 	}
 	// if there are no free spaces the function exits without having moved the ant
@@ -143,7 +135,6 @@ bool Ant::breedAnt(Organism*** grid, int r, int c, int nrows, int ncols) {
 
 	// checks to see if ant has been alive for at least 3 time steps
 	if (getCanBreed() >= 3) { // take steps to see if an ant has space to spawn as it is eligible
-		std::cout << "I AM A BREEDING ANT " << getCanBreed() << std::endl;
 		int count = 4; // size of the array to hold the neighbors
 
 		// vars keep track if the given neighbors are unoccupied, true if they are

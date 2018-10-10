@@ -3,6 +3,7 @@
  *
  *  Created on: Sep 26, 2018
  *      Author: mdmedinamartinez
+ *      Author: agarza
  */
 #include "Organism.h"
 #include <iostream>

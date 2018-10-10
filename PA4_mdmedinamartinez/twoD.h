@@ -2,7 +2,7 @@
  * twoD.h
  *
  *  Created on: Sep 27, 2018
- *      Author: Mike Ciaraldi, mdmedinamartinez
+ *      Author: Mike Ciaraldi, mdmedinamartinez, agarza
  *	Utilized same files as in Life to create 2D arrays
  */
 

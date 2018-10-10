@@ -3,6 +3,7 @@
  *
  *  Created on: Sep 26, 2018
  *      Author: mdmedinamartinez
+ *      Author: agarza
  */
 
 #ifndef DOODLEBUG_H_
@@ -18,7 +19,9 @@ public:
 	bool breedDoodle(Organism*** grid, int r, int c, int nrows, int ncols);
 	bool checkStarvation(Organism*** grid, int r, int c);
 	int getTimeStepsSinceEaten();
-	void setTimeStepsSinceEaten(int t);
+	void increaseTimeStepsSinceEaten();
+	void setTimeStepsSinceEaten(int i);
+
 	Doodlebug(int row, int col);
 	~Doodlebug();
 };

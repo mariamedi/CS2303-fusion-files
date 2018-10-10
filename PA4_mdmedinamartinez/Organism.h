@@ -3,6 +3,7 @@
  *	The parent class for both an Ant and Doodlebug
  *  Created on: Sep 26, 2018
  *      Author: mdmedinamartinez
+ *      Author: agarza
  */
 
 #ifndef ORGANISM_H_

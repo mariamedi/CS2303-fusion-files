@@ -3,6 +3,7 @@
  *
  *  Created on: Sep 27, 2018
  *      Author: mdmedinamartinez
+ *      Author: agarza
  */
 
 #ifndef BOARD_H_
@@ -23,7 +24,6 @@ public:
 	void printBoard();
 	int checkTermination();
 	void printEnd(int argc, char** argv);
-   // void decreaseAnts();
 	Board(int rows, int cols, int ants, int doodles, int seed);
 	~Board();
 private:

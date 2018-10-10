@@ -3,6 +3,7 @@
  *
  *  Created on: Sep 19, 2018
  *      Author: mdmedinamartinez
+ *      Author: agarza
  */
 #include <iostream>
 #include "Organism.h"
@@ -131,7 +132,7 @@ int main(int argc, char** argv) {
 			board->printBoard();
 		}
 		// checks to see if an end condition has been reached
-		if(board->checkTermination())
+		if(board->checkTermination() != 0)
 			i = timeSteps; // used to force out of for-loop
 	}
 

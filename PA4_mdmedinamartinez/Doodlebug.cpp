@@ -3,6 +3,7 @@
  *
  *  Created on: Sep 26, 2018
  *      Author: mdmedinamartinez
+ *      Author: agarza
  */
 #include <iostream>
 #include "Doodlebug.h"
@@ -150,7 +151,6 @@ bool Doodlebug::move(Organism*** grid, int r, int c, int nrows, int ncols) {
 		case 0:
 			if (upAnt) {
 				grid[r - 1][c] = NULL;
-				//delete grid[r - 1][c]; // delete the ant that had been there
 				grid[r - 1][c] = grid[r][c]; // assigns the current ant pointer to the new location
 				grid[r - 1][c]->setMoved(true);
 			}
@@ -158,7 +158,6 @@ bool Doodlebug::move(Organism*** grid, int r, int c, int nrows, int ncols) {
 		case 1:
 			if (downAnt) {
 				grid[r + 1][c] = NULL;
-				//delete grid[r + 1][c];
 				grid[r + 1][c] = grid[r][c]; // assigns the current ant pointer to the new location
 				grid[r + 1][c]->setMoved(true);
 			}
@@ -166,7 +165,6 @@ bool Doodlebug::move(Organism*** grid, int r, int c, int nrows, int ncols) {
 		case 2:
 			if (rightAnt) {
 				grid[r][c + 1] = NULL;
-				//delete grid[r][c + 1];
 				grid[r][c + 1] = grid[r][c]; // assigns the current ant pointer to the new location
 				grid[r][c + 1]->setMoved(true);
 			}
@@ -174,7 +172,6 @@ bool Doodlebug::move(Organism*** grid, int r, int c, int nrows, int ncols) {
 		case 3:
 			if (leftAnt) {
 				grid[r][c - 1] = NULL;
-				//delete grid[r][c - 1];
 				grid[r][c - 1] = grid[r][c]; // assigns the current ant pointer to the new location
 				grid[r][c - 1]->setMoved(true);
 			}
@@ -184,7 +181,6 @@ bool Doodlebug::move(Organism*** grid, int r, int c, int nrows, int ncols) {
 		}
 		ateAnt = true;
 		setTimeStepsSinceEaten(0); // reset the time passed since they ate back to 0
-		//delete grid[r][c];
 		grid[r][c] = NULL; //resets the old space to be a null pointer now
 	}
 
@@ -204,7 +200,6 @@ bool Doodlebug::move(Organism*** grid, int r, int c, int nrows, int ncols) {
 			grid[r][c - 1] = grid[r][c]; // assigns the current ant pointer to the new location
 			grid[r][c - 1]->setMoved(true);
 		}
-		//delete grid[r][c];
 		grid[r][c] = NULL; //resets the old space to be a null pointer now
 	} else if (unoccupied > 1 && !grid[r][c]->getMoved()) { // if > 1 then chooseRandomNeighbor(pass in the array and return a pointer to the right one in the grid)
 		while (!grid[r][c]->getMoved()) { // runs until the doodle has moved
@@ -213,34 +208,26 @@ bool Doodlebug::move(Organism*** grid, int r, int c, int nrows, int ncols) {
 			// and moves the ant. A case should be selected because value above is being modded by the count
 			switch (randomSelector) {
 			case 0:
-				std::cout << "DOODLE UP "<< std::endl;
 				if (up) {
-					std::cout << "DOODLE MOVED UP" << std::endl;
 					grid[r - 1][c] = grid[r][c]; // assigns the current ant pointer to the new location
 					grid[r - 1][c]->setMoved(true); // to ensure not moved again in same turn
 				}
 				break;
 			case 1:
-				std::cout << "DOODLE DOWN "<< std::endl;
 
 				if (down) {
-					std::cout << "DOODLE MOVED DOWN" << std::endl;
 					grid[r + 1][c] = grid[r][c]; // assigns the current ant pointer to the new location
 					grid[r + 1][c]->setMoved(true); // to ensure not moved again in same turn
 				}
 				break;
 			case 2:
-				std::cout << "DOODLE RIGHT " << std::endl;
 				if (right) {
-					std::cout << "DOODLE MOVED RIGHT" << std::endl;
 					grid[r][c + 1] = grid[r][c]; // assigns the current ant pointer to the new location
 					grid[r][c + 1]->setMoved(true); // to ensure not moved again in same turn
 				}
 				break;
 			case 3:
-				std::cout << "DOODLE LEFT "<< std::endl;
 				if (left) {
-					std::cout << "DOODLE MOVED LEFT" << std::endl;
 					grid[r][c - 1] = grid[r][c]; // assigns the current ant pointer to the new location
 					grid[r][c - 1]->setMoved(true); // to ensure not moved again in same turn
 				}
@@ -362,8 +349,9 @@ bool Doodlebug::breedDoodle(Organism*** grid, int r, int c, int nrows,
 bool Doodlebug::checkStarvation(Organism*** grid, int r, int c) {
 	if (getTimeStepsSinceEaten() >= 3) // the doodle is starved and will die
 			{
-		//delete grid[r][c]; // delete the doodlebug
-		grid[r][c] = NULL; // set the old pointer to null
+		delete grid[r][c];
+		grid[r][c] = NULL;
+		grid[r][c] = new Organism(); // set the old pointer to null
 		return true;
 	}
 	return false;
@@ -379,8 +367,15 @@ int Doodlebug::getTimeStepsSinceEaten() {
  * Sets the timeSteps to the passed in value
  * @param t The steps that are being set
  */
-void Doodlebug::setTimeStepsSinceEaten(int t) {
-	timeStepsSinceEaten = t;
+void Doodlebug::increaseTimeStepsSinceEaten() {
+	timeStepsSinceEaten++;
+}
+/**
+ * Sets the timeSteps to the passed in value
+ * @param t The steps that are being set
+ */
+void Doodlebug::setTimeStepsSinceEaten(int i) {
+	timeStepsSinceEaten = i;
 }
 Doodlebug::~Doodlebug() {
 
